@@ -1,5 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
 
 import { Broadcaster } from 'ngx-base';
 import { Contexts } from 'ngx-fabric8-wit';
@@ -14,11 +15,12 @@ import { ssoApiUrlProvider } from './shared/sso-api.provider';
 import { realmProvider } from './shared/realm-token.provider';
 import { MockAuthenticationService } from './shared/mock-auth.service';
 
-// Imports stackdetailsmodule
-import { StackDetailsModule } from './stack/stack-details/stack-details.module';
+// // Imports stackdetailsmodule
+// import { StackDetailsModule } from './stack/stack-details/stack-details.module';
+import {StackDetailsModule} from 'fabric8-stack-analysis-ui';
 
 @NgModule({
-  imports:      [ BrowserModule, StackDetailsModule ],
+  imports:      [ BrowserModule, StackDetailsModule, FormsModule ],
   declarations: [ AppComponent ],
   providers: [
     Broadcaster,

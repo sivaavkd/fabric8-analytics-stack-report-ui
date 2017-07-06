@@ -1,1 +1,4 @@
-<stack-details [stack]="stackUrl && stackUrl"></stack-details>
+<div class="form-group" style="text-align: center;margin-top: 50px;">
+<input type="text" [(ngModel)]="label" (keyup)="changeLabel()" placeholder="Enter Build ID ..." style="margin-left: 46px;float: left;margin-right: 5px;"/>
+<stack-details [stack]="stackUrl && stackUrl" style="text-align: left;"></stack-details>
+</div>

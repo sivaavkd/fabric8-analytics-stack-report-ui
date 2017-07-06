@@ -3,42 +3,34 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "declaration": true,
-    "stripInternal": true,
-    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "inlineSources": true,
-    "noEmitHelpers": false,
     "strictNullChecks": false,
-    "removeComments": false,
-    "noImplicitAny": false,
-    "allowUnreachableCode": false,
-    "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": "dist",
-    "paths": {
-      "@angular/common": ["node_modules/@angular/common"],
-      "rxjs/*": ["node_modules/rxjs/*"]
-    },
+    "noUnusedLocals": false,
+    "baseUrl": "./src",
     "lib": [
-      "es2015",
-      "dom"
+      "dom",
+      "es6"
+    ],
+    "types": [
+      "jasmine",
+      "node",
+      "protractor",
+      "selenium-webdriver",
+      "source-map",
+      "segment-analytics",
+      "webpack"
     ]
   },
-  "files": [
-    "index.ts"
+  "exclude": [
+    "node_modules",
+    "dist"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
     "useWebpackText": true
-  },
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true,
-    "genDir": "./ngfactory"
   },
   "compileOnSave": false,
   "buildOnSave": false,

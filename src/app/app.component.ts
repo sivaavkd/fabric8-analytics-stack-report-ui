@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-    public stackUrl: string = 'https://recommender.api.openshift.io/api/v1/stack-analyses/4dee41bf900a4c05aa96c91bd7a064c3';
+    public label:string;
+    public stackUrl: string;//d6819b27a4ba4e8fa6f6bf63bb7764ee;
+    changeLabel() {
+        console.log(this.label);
+        this.stackUrl = 'https://recommender.api.openshift.io/api/v1/stack-analyses/'+ this.label;
+  }
 }
