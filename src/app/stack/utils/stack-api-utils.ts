@@ -1,0 +1,134 @@
+import {Observable} from 'rxjs';
+
+function stackApiUtils(data: any, target: string): Observable<any> {
+    let observable: Observable<any> = null;
+    observable = Observable.create((observer) => {
+        if (data) {
+            let result: any = {};
+            result['finishedTime'] = data.finished_at;
+            result['requestId'] = data.request_id;
+            result['schema'] = data.schema;
+            result['startedTime'] = data.started_at;
+            if (target === 'RECOM') {
+                if (data.hasOwnProperty('recommendation')) {
+                    result['recommendation'] = data.recommendation;
+                }
+            } else if (target === 'RESULT') {
+                if (data.hasOwnProperty('result')) {
+                    result['result'] = data.result;
+                }
+            } else if (target === 'ALL') {
+                if (data.hasOwnProperty('recommendation')) {
+                    result['recommendation'] = data.recommendation;
+                }
+                if (data.hasOwnProperty('result')) {
+                    result['result'] = data.result;
+                }
+            }
+            observer.next(result);
+        }
+        observer.complete();
+    });
+    return observable;
+}
+
+/**
+ * getStackRecommendations - A function that gets the data from the stack analysis API
+ * parses accordingly to get only recommendations.
+ *
+ * This function can be reused across as it returns an observable.
+ *
+ * Input: data of type 'any'
+ * Ouput: Observable of type 'any'
+ */
+export function getStackRecommendations(data: any): Observable<any> {
+    let recommendationsObservable: Observable<any> = stackApiUtils(data, 'ALL');
+    let resultObservable: Observable<any> = null;
+    if (recommendationsObservable) {
+        recommendationsObservable.subscribe((result) => {
+            let resultData: Array<any> = result.result;
+            let fileName: string = '';
+
+            let finishedTime = result['finishedTime'];
+            let requestId = result['requestId'];
+            let schema = result['schema'];
+            let startedTime = result['startedTime'];
+
+            if (resultData && resultData.length > 0) {
+                fileName = resultData[0].manifest_name;
+            }
+            let recommendations: any = result.recommendation;
+            if (recommendations && recommendations.hasOwnProperty('analysis')) {
+                let analysis: any = recommendations['analysis'];
+                if (analysis) {
+                    /*let similarStacks = analysis.similar_stacks;
+                    similarStacks = similarStacks.length > 0 ? similarStacks[0] : null;*/
+                    let resultObject: any = {};
+                    if (analysis) {
+                        let alternatePackages: Array<string> = analysis.alternate_packages;
+                        let companionPackages: Array<string> = analysis.companion_packages;
+                        /*let similarity: number = similarStacks.similarity;
+                        let source: string = similarStacks.source;
+                        let stackId: string = similarStacks.stack_id;
+                        let stackName: string = similarStacks.stack_name;
+                        let usage: number = similarStacks.usage;*/
+                        resultObject = {
+                            missing: alternatePackages,
+                            version: companionPackages,
+                            similarity: 25,
+                            source: '',
+                            stackId: 'stackId',
+                            stackName: 'stackName',
+                            usage: 23,
+                            fileName: fileName,
+                            finishedTime: finishedTime,
+                            requestId: requestId,
+                            schema: schema,
+                            startedTime: startedTime
+                        };
+
+                        resultObservable = Observable.create((observer) => {
+                            observer.next(resultObject);
+                            observer.complete();
+                        });
+                    }
+                }
+            }
+        });
+    }
+    return resultObservable;
+}
+
+/**
+ * getResultInformation - A function that gets the data from the stack analysis API
+ * parses accordingly to get only result information.
+ *
+ * This function can be reused across as it returns an observable.
+ *
+ * Input: data of type 'any'
+ * Ouput: Observable of type 'any'
+ */
+export function getResultInformation(data: any): Observable<any> {
+    let resultObservable: Observable<any> = stackApiUtils(data, 'RESULT');
+    let resultInfo: Observable<any> = null;
+    if (resultObservable) {
+        resultObservable.subscribe((information) => {
+            if (information && information.hasOwnProperty('result') && information.result.length > 0) {
+                let stackResult: Array<any> = information.result;
+                let result: any = {
+                    components: stackResult[0].components,
+                    distinctLicenses: stackResult[0].distinct_licenses,
+                    popularity: stackResult[0].popularity,
+                    ecosystem: stackResult[0].ecosystem,
+                    manifest: stackResult[0].manifest_name,
+                    totalLicenses: stackResult[0].total_licenses
+                };
+                resultInfo = Observable.create((observer) => {
+                    observer.next(result);
+                    observer.complete();
+                });
+            }
+        });
+    }
+    return resultInfo;
+}

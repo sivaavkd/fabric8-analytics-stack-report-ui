@@ -17,7 +17,7 @@ import { MockAuthenticationService } from './shared/mock-auth.service';
 
 // // Imports stackdetailsmodule
 // import { StackDetailsModule } from './stack/stack-details/stack-details.module';
-import {StackDetailsModule} from 'fabric8-stack-analysis-ui';
+import {StackDetailsModule} from './stack/stack-details/stack-details.module';
 
 @NgModule({
   imports:      [ BrowserModule, StackDetailsModule, FormsModule ],

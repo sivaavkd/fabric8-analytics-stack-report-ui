@@ -1,0 +1,231 @@
+{
+  "request_id": "a05dd1220d4845f880ab67a1db50f908",
+  "started_at": "2017-06-02T03:37:08.496354",
+  "finished_at": "2017-06-02T03:37:08.657916",
+  "result": [
+    {
+      "manifest_name": "pom.xml",
+      "user_stack_info": {
+        "ecosystem": "maven",
+        "_release": "None:None:None",
+        "analyzed_dependents_count": 2,
+        "analyzed_dependents": [{"name": "dep", "version": "1.0.0"}],
+        "unknown_dependents_count": 0,
+        "unknown_dependents": [{"name": "unknown1", "version": "1.0.0"}],
+        "recommendation_ready": true,
+        "distinct_licenses": [
+          "Forbidden Phrase",
+          "Rsfs",
+          "ASL 2.0",
+          "MITNFA",
+          "Free Art"
+        ],
+        "recommended_stack_licenses": ["ASL 2.0"],
+        "total_licenses": 5,
+        "stack_license_conflict": false
+      },
+      "recommendations": {
+        "companion": [
+          {
+            "ecosystem": "maven",
+            "name": "component1",
+            "version": "1.0.0",
+            "licenses": [
+              "MIT"
+            ],
+            "sentiment": {
+              "overall_score": 0.65,
+              "latest_comment": ""
+            },
+            "latest_version": "1.0.1",
+            "security": [
+              {
+                "CVE": "CVE-10000",
+                "CVSS": "1.0"
+              }
+            ],
+            "osio_user_count": 142,
+            "github": {
+              "dependent_projects": 10,
+              "dependent_repos": 200,
+              "used_by": [
+                {"name": "dep1", "stars": 1234},
+                {"name": "dep2", "stars": 345}
+              ],
+              "total_releases": 21,
+              "latest_release_duration": "2 months",
+              "first_release_date": "Apr 16, 2010",
+              
+              "forks_count": 23000,
+              "issues": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "pull_requests": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "stargazers_count": 2578,
+              "watchers": 1673,
+              "contributors": 132,
+              "size": "4MB"
+            },
+            "code_metrics": {
+              "average_cyclomatic_complexity": 1.34,
+              "code_lines": 80586,
+              "total_files": 441
+            }
+          }
+        ],
+        "alternate": [
+          {
+            "ecosystem": "maven",
+            "name": "component2",
+            "version": "1.1.0",
+            "licenses": [
+              "MIT"
+            ],
+            "sentiment": {
+              "overall_score": 0.65,
+              "latest_comment": ""
+            },
+            "replaces": [
+              {"name": "comp1", "version": "1.2.0"}
+            ],
+            "security": [
+              {
+                "CVE": "CVE-99999",
+                "CVSS": "2.0"
+              }
+            ],
+            "osio_user_count": 87,
+            "latest_version": "1.1.3",
+            "github": {
+              "dependent_projects": 10,
+              "dependent_repos": 200,
+              "total_releases": 21,
+              "latest_release_duration": "2 months",
+              "first_release_date": "Apr 16, 2010",
+              "used_by": [
+                {"name": "dep3", "stars": 2102},
+                {"name": "dep4", "stars": 432}
+              ],
+              "forks_count": 23000,
+              "issues": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "pull_requests": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "stargazers_count": 2578,
+              "watchers": 1673,
+              "contributors": 132,
+              "size": "4MB"
+            },
+            "code_metrics": {
+              "average_cyclomatic_complexity": 1.34,
+              "code_lines": 80586,
+              "total_files": 441
+            }
+          }
+        ],
+        "user_stack_dependencies": [
+          {
+            "ecosystem": "maven",
+            "name": "component3",
+            "version": "1.2.0",
+            "licenses": [
+              "MIT"
+            ],
+            "license_outlier": false,
+            "usage_outlier": false,
+            "sentiment": {
+              "overall_score": 0.65,
+              "latest_comment": ""
+            },
+            "security": [
+              {
+                "CVE": "CVE-12345",
+                "CVSS": "5.0"
+              }
+            ],
+            "osio_user_count": 641,
+            "latest_version": "1.2.3",
+            "github": {
+              "dependent_projects": 10,
+              "dependent_repos": 200,
+              "total_releases": 21,
+              "latest_release_duration": "2 months",
+              "first_release_date": "Apr 16, 2010",
+              "used_by": [
+                {"name": "dep5", "stars": 3021},
+                {"name": "dep6", "stars": 523}
+              ],
+              "forks_count": 23000,
+              "issues": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "pull_requests": {
+                "month": {
+                  "closed": -1,
+                  "opened": -1
+                },
+                "year": {
+                  "closed": -1,
+                  "opened": -1
+                }
+              },
+              "stargazers_count": 2578,
+              "watchers": 1673,
+              "contributors": 132,
+              "size": "4MB"
+            },
+            "code_metrics": {
+              "average_cyclomatic_complexity": 1.34,
+              "code_lines": 80586,
+              "total_files": 441
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "schema": {
+    "name": "stack_analyses",
+    "url": "http://recommender.api.openshift.io/api/v1/schemas/api/stack_analyses/2-1-4/",
+    "version": "2-1-4"
+  }
+}

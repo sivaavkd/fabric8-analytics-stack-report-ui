@@ -1,0 +1,10 @@
+<div [ngClass]="recommendation.isCurrent === true ? 'active' : ''" class="recommend-tile">
+    <div class="col-xs-4 package-used col-xs-offset-2">
+        <i class="fa fa-folder folder-icon" aria-hidden="true"></i>
+        <span class="package-name-depend">{{recommendation.name}}</span>
+    </div>
+    <div class="col-xs-4 used-stars">
+        <i class="fa fa-tag" aria-hidden="true"></i>
+        <span class="used-star-count">{{recommendation.version}}</span>
+    </div>
+</div>

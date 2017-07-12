@@ -1,0 +1,145 @@
+<div class="container stack-details">
+  <div class="row">
+    <a class="stack-reports-btn" (click)="showStackModal($event)">{{displayName}}</a>
+    <modal #stackModule title="Report title on Application, Build #{{buildId}}" modalClass="modal-lg modal-fullscreen" (onClose)="handleModalClose();" (onOpen)="getStackResults();">
+      <modal-header>
+          {{modalHeader}}
+      </modal-header>
+      <modal-content>
+          <div *ngIf="isLoading" class="pre-loader">
+            <div class="pre-loader-spinner spinner spinner-lg"></div>
+          </div>
+          <div [hidden]="errorMessage.message">
+            
+            <!-- New Stack Analyses Implementation -->
+            <div class="col-xs-12 col-md-4 recommendations-section">
+              <!-- Companion -->
+              <h1>Recommendations</h1>
+              <div class="recommendation-type companion-section">
+                <h3 class="recommendation-title">Companion components</h3>
+                <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="companion"></recommendations>
+              </div>
+
+              <!-- Alternate -->
+              <div class="recommendation-type alternate-section">
+                <h3 class="recommendation-title">Alternative components</h3>
+                <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="alternate"></recommendations>
+              </div>
+              <!-- User -->
+              <div class="recommendation-type user-section">
+                <h3 class="recommendation-title">Your application Stack</h3>
+                <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="user"></recommendations>
+              </div>
+              <!-- Stack level information -->
+              <div class="recommendation-type stack-section">
+                <h3 class="recommendation-title">Recommendations: Your application stack</h3>
+                <div><i class="pficon pficon-virtual-machine"></i><span style="margin-left: 10px;">{{stackLevelInfo.ecosystem}}</span></div>
+                <div><i class="fa fa-arrow-circle-o-up"></i><span style="margin-left: 10px;">{{stackLevelInfo._release}}</span> (Latest Release)</div>
+                <div>
+                  <div (click)="toggleAnalysedDepData($event)">
+                    <i class="pficon pficon-topology"></i><span style="margin-left: 10px;">Analysed Dependent Packages</span>
+                    <i [ngClass]="showAnalysedDepData ? 'fa fa-angle-up' : 'fa fa-angle-down'"  style="float: right;"></i>
+                  </div>
+                  <ul *ngIf="showAnalysedDepData" class="list-group">
+                    <li class="list-group-item" *ngFor="let value of stackLevelInfo.analyzed_dependencies; trackBy: index;">
+                      <div class="recommend-tile">
+                        <div class="col-xs-4 package-used col-xs-offset-2">
+                          <i class="fa fa-folder folder-icon"></i>
+                          <span class="package-name-depend">{{value.name}}</span>
+                        </div>
+                        <div class="col-xs-4 used-stars">
+                          <i class="fa fa-tag"></i>
+                          <span class="used-star-count">{{value.version}}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <div (click)="toggleDependentsData($event)">
+                    <i class="pficon pficon-topology"></i><span style="margin-left: 10px;">Unknown Dependencies</span>
+                    <i [ngClass]="showDependentsData ? 'fa fa-angle-up' : 'fa fa-angle-down'" style="float: right;"></i>
+                  </div>
+                  <ul *ngIf="showDependentsData" class="list-group">
+                    <li class="list-group-item" *ngFor="let value of stackLevelInfo.unknown_dependents; trackBy: index;">
+                      <div class="recommend-tile">
+                        <div class="col-xs-4 package-used col-xs-offset-2">
+                          <i class="fa fa-folder folder-icon"></i>
+                          <span class="package-name-depend">{{value.name}}</span>
+                        </div>
+                        <div class="col-xs-4 used-stars">
+                          <i class="fa fa-tag"></i>
+                          <span class="used-star-count">{{value.version}}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div><i class="fa fa-list-alt"></i><span style="margin-left: 10px;">Licenses</span>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <span style="margin-left: 10px;">{{stackLevelInfo.distinct_licenses}}</span>
+                    </li>
+                  </ul>
+                </div>  
+
+                <div *ngIf="outliers.usage_outliers">
+                  <i class="pficon pficon-warning-triangle-o"></i>
+                  <span style="margin-left: 10px; color: orange;">Calculated Package <span class="outlier-name" *ngFor="let usage_outlier of outliers.usage_outliers">{{usage_outlier.package_name}}</span>
+                  is rarely used with current stack 
+                  </span>
+                </div>
+
+                <div *ngIf="outliers.license_outliers">
+                  <i class="pficon pficon-warning-triangle-o"></i>
+                  <span style="margin-left: 10px;color: orange;">License {{outliers.license_outliers}} which is included is conflicting with other licenses 
+                  in the stack
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-8 preview-section">
+              <div class="preview-area">
+                <preview [previewData]="previewData"></preview>
+              </div>
+            </div>
+            <!-- New Stack Analyses Implementation -->
+
+          </div>
+          <div class="error-msg blank-slate-pf" [hidden]="!errorMessage.message">
+            <div [hidden]="!errorMessage.status">
+              <div class="warning-icon blank-slate-pf-icon">
+                <i class="pficon-warning-triangle-o"></i>
+              </div>
+              <h1>
+                {{messages && messages['report_failure']}}
+                <span *ngIf="errorMessage.status">{{messages && messages['error_code']}} {{errorMessage.status}}</span>
+              </h1>
+              <p>
+                {{messages && messages['error_text']}}{{errorMessage.message}}
+              </p>
+            </div>
+            <div [hidden]="errorMessage.status">
+              <div class="container-progress progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                  <span>50%</span>
+                </div>
+              </div>
+              <h3>
+                {{messages && messages['report_loading']}}
+              </h3>
+              <p>{{errorMessage.message}}</p>
+            </div>
+            <div [hidden]="errorMessage.status" class="blank-slate-pf-secondary-action">
+              <button class="btn btn-default" (click)="stackModule.close()">{{messages && messages['cancel']}}</button>
+              <button class="btn btn-primary" (click)="stackModule.close()">{{messages && messages['load_and_return_to_pipeline']}}</button>
+            </div>
+            <div [hidden]="!errorMessage.status" class="blank-slate-pf-secondary-action">
+              <button class="btn btn-primary" (click)="stackModule.close()">{{messages && messages['return_to_pipeline']}}</button>
+            </div>
+          </div>
+      </modal-content>
+    </modal>
+  </div>
+</div>
+
