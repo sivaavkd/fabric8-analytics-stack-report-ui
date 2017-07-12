@@ -43,9 +43,9 @@ export class StackAnalysesService {
   }
 
   getStackResults(url: string): Observable<any> {
-      console.log(url);
+      let options = new RequestOptions({ headers: this.headers });
       return this .http
-                  .get(url)
+                  .get(url, options)
                   .map(this.extractData)
                   .catch(this.handleError);
   }

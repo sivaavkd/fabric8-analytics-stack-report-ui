@@ -7,10 +7,11 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-    public label:string;
-    public stackUrl: string;//d6819b27a4ba4e8fa6f6bf63bb7764ee;
+    public label: string;
+    public stackUrl: string;
+    // d6819b27a4ba4e8fa6f6bf63bb7764ee;
     changeLabel() {
         console.log(this.label);
-        this.stackUrl = 'https://recommender.api.openshift.io/api/v1/stack-analyses/'+ this.label;
+        this.stackUrl = 'http://bayesian-api-bayesian-preview.b6ff.rh-idev.openshiftapps.com/api/v1/stack-analyses-v2/' + this.label;
   }
 }

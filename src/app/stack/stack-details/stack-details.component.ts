@@ -62,6 +62,7 @@ export class StackDetailsComponent implements OnInit {
   public userStack: any = {};
   public stackLevelInfo: any = {};
   public outliers: any = {};
+  public hasRecommendations: boolean = false;
 
   public previewData: any = {};
 
@@ -394,14 +395,31 @@ export class StackDetailsComponent implements OnInit {
 
 
   /** New Stack Analysis Implementation */
-  private getStackResults(): void {
-    let url: string = 'https://gist.githubusercontent.com/arunkumars08/530483080a4162edcb57b9924a8eefd1/raw/95aa0700534140098a003d1d5a798a9c2b3778de/stack.json';
+  private getStackResults(url: string): void {
+    // let url: string = 'https://gist.githubusercontent.com/arunkumars08/530483080a4162edcb57b9924a8eefd1/raw/95aa0700534140098a003d1d5a798a9c2b3778de/stack.json';
     let result: Observable<any> = this.stackAnalysesService.getStackResults(url);
     result.subscribe((data: any) => {
-      this.handleStackResult(data);
-      this.isLoading = false;
+      this.clearLoader();
+      this.modalHeader = 'Updated just now';
+      if (data && (!data.hasOwnProperty('error') && Object.keys(data).length !== 0)) {
+        this.handleStackResult(data);
+        // Ends Recommendations
+
+      } else {
+        // Set an error if the data is invalid or not proper.
+        this.errorMessage.message = `This could take a while. Return to pipeline to keep
+        working or stay on this screen to review progress.`;
+        this.modalHeader = 'Updating ...';
+      }
+    },
+    error => {
+      this.clearLoader();
+      // Throw error when the service fails
+      this.errorMessage.message = error.message;
+      this.errorMessage.status = error.status;
+      this.errorMessage.statusText = error.statusText;
+      this.modalHeader = 'Report failed ...';
     });
-    console.log(result);
   }
 
   private buildCommon(data: Array<any>): void {
@@ -435,26 +453,28 @@ export class StackDetailsComponent implements OnInit {
     let result = data.result[0];
     let userStack: any = result['user_stack_info'];
     let recommendations: any = result['recommendations'];
-    let outliers: any = {
-      usage_outliers: recommendations['usage_outliers'],
-      license_outliers: recommendations['license_outliers']
-    };
+    if (Object.keys(recommendations).length !== 0) {
+      this.hasRecommendations = true;
+      let outliers: any = {
+        usage_outliers: recommendations['usage_outliers'],
+        license_outliers: recommendations['license_outliers']
+      };
 
-    this.companion = recommendations['companion'];
-    this.alternate = recommendations['alternate'];
-    this.user = userStack['dependencies'];
-    this.previewData = this.companion[0];
-    this.previewData.isCurrent = true;
-    this.previewData.showWorkItem = true;
+      this.companion = recommendations['companion'];
+      this.alternate = recommendations['alternate'];
+      this.user = userStack['dependencies'];
+      this.previewData = this.companion[0];
+      this.previewData.isCurrent = true;
+      this.previewData.showWorkItem = true;
 
-    console.log('Companion');
-    console.log(this.companion);
-
-    this.buildCompanion(this.companion);
-    this.buildAlternate(this.alternate);
-    this.buildUserStack(this.user);
-
-    this.buildStackLevelInfo(userStack, outliers);
+      this.buildStackLevelInfo(userStack, outliers);
+    } else {
+      this.hasRecommendations = false;
+      this.user = userStack['dependencies'];
+      this.previewData = this.user[0];
+      this.previewData.isCurrent = true;
+      this.previewData.showWorkItem = false;
+    }
   }
 
   public toggleAnalysedDepData(event: Event): void {

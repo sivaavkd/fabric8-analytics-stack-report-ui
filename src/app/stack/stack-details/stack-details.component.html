@@ -1,7 +1,7 @@
 <div class="container stack-details">
   <div class="row">
     <a class="stack-reports-btn" (click)="showStackModal($event)">{{displayName}}</a>
-    <modal #stackModule title="Report title on Application, Build #{{buildId}}" modalClass="modal-lg modal-fullscreen" (onClose)="handleModalClose();" (onOpen)="getStackResults();">
+    <modal #stackModule title="Report title on Application, Build #{{buildId}}" modalClass="modal-lg modal-fullscreen" (onClose)="handleModalClose();" (onOpen)="getStackResults(stack);">
       <modal-header>
           {{modalHeader}}
       </modal-header>
@@ -15,17 +15,22 @@
             <div class="col-xs-12 col-md-4 recommendations-section">
               <!-- Companion -->
               <h1>Recommendations</h1>
-              <div class="recommendation-type companion-section">
-                <h3 class="recommendation-title">Companion components</h3>
-                <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="companion"></recommendations>
-              </div>
+              <div *ngIf="hasRecommendations">
+                <div class="recommendation-type companion-section">
+                  <h3 class="recommendation-title">Companion components</h3>
+                  <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="companion"></recommendations>
+                </div>
 
-              <!-- Alternate -->
-              <div class="recommendation-type alternate-section">
-                <h3 class="recommendation-title">Alternative components</h3>
-                <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="alternate"></recommendations>
+                <!-- Alternate -->
+                <div class="recommendation-type alternate-section">
+                  <h3 class="recommendation-title">Alternative components</h3>
+                  <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="alternate"></recommendations>
+                </div>
+                <!-- User -->
               </div>
-              <!-- User -->
+              <div *ngIf="!hasRecommendations">
+                No Recommendations to be shown
+              </div>
               <div class="recommendation-type user-section">
                 <h3 class="recommendation-title">Your application Stack</h3>
                 <recommendations (onRecommendationSelect)="handleSelectedRecommendation($event)" [recommendations]="user"></recommendations>
@@ -45,7 +50,7 @@
                       <div class="recommend-tile">
                         <div class="col-xs-4 package-used col-xs-offset-2">
                           <i class="fa fa-folder folder-icon"></i>
-                          <span class="package-name-depend">{{value.name}}</span>
+                          <span class="package-name-depend">{{value.package}}</span>
                         </div>
                         <div class="col-xs-4 used-stars">
                           <i class="fa fa-tag"></i>
