@@ -1,8 +1,10 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 import { ModalModule } from 'ngx-modal';
+import {TabsModule} from 'ng2-bootstrap';
 
 import { GlobalConstants } from '../constants/constants.service';
 import { OverviewModule } from '../overview/overview.module';
@@ -10,19 +12,19 @@ import { RecommenderModule } from '../recommender/recommender.module';
 import { StackComponentsModule } from '../stack-components/stack-components.module';
 import { StackDetailsComponent } from './stack-details.component';
 
-import {RecommendationsModule} from '../new-ux/recommendations/recommendations.module';
-import {PreviewModule} from '../new-ux/preview/preview.module';
+/** New UX */
+import {StackLevelModule} from '../stack-level/stack-level.module';
+import {ComponentLevelModule} from '../component-level/component-level.module';
+/** New UX */
 
 @NgModule({
   imports: [
     CommonModule,
     HttpModule,
-    ModalModule,
-    RecommenderModule,
-    StackComponentsModule,
-    OverviewModule,
-    RecommendationsModule,
-    PreviewModule
+    FormsModule,
+    StackLevelModule,
+    ComponentLevelModule,
+    TabsModule.forRoot()
   ],
   declarations: [ StackDetailsComponent ],
   exports: [ StackDetailsComponent ],

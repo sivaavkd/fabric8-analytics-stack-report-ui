@@ -1,18 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OverviewComponent } from './overview.component';
-import {ChartModule} from '../new-ux/chart-module/chart.module';
+import { ChartComponent } from './chart-component';
 
 @NgModule({
-    imports: [CommonModule, ChartModule],
+    imports: [CommonModule],
     declarations: [
-        OverviewComponent
+        OverviewComponent,
+        ChartComponent
     ],
     exports: [
         OverviewComponent,
-        ChartModule
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        ChartComponent
+    ]
 })
 export class OverviewModule {}

@@ -1,18 +1,20 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {RecommendTileComponent} from './recommend-tile.component';
+import {ComponentLevelComponent} from './component-level.component';
 
 @NgModule({
     imports: [
         CommonModule
     ],
     declarations: [
-        RecommendTileComponent
+        ComponentLevelComponent
     ],
     exports: [
-        RecommendTileComponent
+        ComponentLevelComponent
     ]
 })
 
-export class RecommendTileModule {}
+export class ComponentLevelModule {
+
+}

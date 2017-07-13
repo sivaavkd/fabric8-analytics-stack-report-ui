@@ -1,0 +1,127 @@
+.stack-level-information {
+    .user-stack {
+        display: flex;
+        .block-section {
+            padding: 15px 30px 15px 30px;
+            border-right: 1px solid #ededed;
+            border-bottom: 1px solid #ededed;
+            .heading {
+                font-weight: bold;
+                font-size: 15px;
+                color: #000;
+            }
+            .licenses-info {
+                margin-top: 20px;
+            }
+
+            .component-info {
+                margin-top: 40px;
+                p {
+                    font-size: 15px;
+                    color: #999;
+                    font-weight: 100;
+                    margin: 0;
+                }
+                .component-count-icon {
+                    font-size: 25px;
+                    &.unknown {
+                        color: RED;
+                    }
+                    &.analyzed {
+                        color: GREEN;
+                    }
+                }
+                span {
+                    display: inline-block;
+                    font-size: 30px;
+                    margin-left: 5px;
+                }
+            }
+            f8-chart {
+                margin-top: -10px;
+                text-align: center;
+
+                .c3-chart-arcs-title {
+                    font-size: 24pt;
+                    font-weight: 100;
+                }
+            }
+            &.security-information {
+                .cvss-id {
+                    font-size: 20px;
+                    font-weight: 100;
+                    margin-top: 5px;
+
+                    i {
+                        font-size: 15px;
+                        cursor: pointer;
+
+                        &.warning-red-color::before {
+                            color: red;
+                        }
+                    }
+                }
+
+                .cvss-data {
+                    height: 50px;
+                    margin-top: 10px;
+
+                    & > div {
+                        height: 100%;
+                        position: relative;
+
+                        .cvss-score {
+                            font-size: 30px;
+                            font-weight: 100;
+                        }
+
+                        .cvss-score-label {
+                            font-size: 15px;
+                            font-weight: 100;
+                            bottom: 6px;
+
+                            .label-1 {
+                                font-size: 18px;
+                            }
+                        }
+
+                        .cvss-indication {
+                            position: absolute;
+                            right: 20px;
+                            bottom: 6px;
+                        }
+                    }
+                }
+
+                .progress-bar {
+                    cursor: pointer;
+                }
+                .which-component {
+                    font-size: 15px;
+                    font-weight: 100;
+                }
+            }
+            .statistics-info {
+                .stat-title {
+                    font-weight: 100;
+                    font-size: 15px;
+                }
+                .usage-outlier {
+                    padding: 0;
+                    li {
+                        display: inline-block;
+                        color: RED;
+                        list-style-type: none;
+                        margin-right: 5px;
+                        &:after {
+                            content: ', ';  
+                        }
+                        &:last-child:after {
+                            content: '';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

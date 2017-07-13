@@ -1,0 +1,29 @@
+<div class="component-information">
+    <h2>Dependencies</h2>
+    <div class="table-responsive">
+        <!-- Table HTML -->
+        <table class="table table-striped table-bordered table-hover children-break-word" id="dependenciesTable">
+        <thead>
+            <tr>
+            <th (click)="handleTableOrderClick(header)" *ngFor="let header of headers">
+                {{header.name}}
+                <span *ngIf="header.isSortable" class="fa {{header.sortDirectionClass || sortDirectionClass}}"></span>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dependency of dependenciesList">
+                <td [ngClass]="{'child-class': dependency.isChild}">{{dependency.name}}</td>
+                <td>{{dependency.current_version}}</td>
+                <td>{{dependency.latest_version}}</td>
+                <td class="ellipsis">{{dependency.license}}</td>
+                <td>{{dependency.sentiment_score}}</td>
+                <td>{{dependency.github_user_count}}</td>
+                <td>{{dependency.osio_user_count}}</td>
+                <td>{{dependency.cves}}</td>
+                <td class="action">{{dependency.action}}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>

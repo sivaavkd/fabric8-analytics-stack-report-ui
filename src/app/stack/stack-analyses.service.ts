@@ -7,6 +7,8 @@ import 'rxjs/add/operator/map';
 
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
+import {StackReportModel} from './models/stack-report.model';
+
 @Injectable()
 export class StackAnalysesService {
 
@@ -42,18 +44,18 @@ export class StackAnalysesService {
       }
   }
 
-  getStackResults(url: string): Observable<any> {
-      let options = new RequestOptions({ headers: this.headers });
-      return this .http
-                  .get(url, options)
-                  .map(this.extractData)
-                  .catch(this.handleError);
-  }
-
   getStackAnalyses(url: string): Observable<any> {
     let options = new RequestOptions({ headers: this.headers });
+    let stackReport: StackReportModel = null;
+
     return this.http.get(url, options)
       .map(this.extractData)
+      .map((data) => {
+        stackReport = data;
+        console.log(typeof stackReport);
+        console.log(stackReport instanceof StackReportModel);
+        return stackReport;
+      })
       .catch(this.handleError);
   }
 
@@ -76,8 +78,8 @@ export class StackAnalysesService {
 
   private extractData(res: Response) {
     let body = res.json();
-    console.log(body);
-    return body || {};
+    console.log(body as StackReportModel);
+    return body as StackReportModel;
   }
 
   private handleError(error: Response | any) {
