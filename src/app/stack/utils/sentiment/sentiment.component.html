@@ -1,0 +1,8 @@
+<div class="sentiment">
+    <div class="left start-threshold">-1</div>
+    <div class="indicator left">
+        <div [ngStyle]="{'background': getSentimentBackground(), 'width': getSentimentWidth()}" class="sentiment-progress"></div>
+    </div>
+    <div class="right">1</div>
+</div>
+<div class="sentiment-score">{{score}}</div>

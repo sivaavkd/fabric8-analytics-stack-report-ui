@@ -4,5 +4,5 @@
             <input type="text" [(ngModel)]="label" (keyup)="changeLabel()" placeholder="Enter Build ID ..." />
         </div>
     </div>-->
-    <stack-details [stack]="stackUrl && stackUrl" style="text-align: left;"></stack-details>
+    <stack-details [stack]="stackUrl && stackUrl !== '' && stackUrl" style="text-align: left;"></stack-details>
 </router-outlet>

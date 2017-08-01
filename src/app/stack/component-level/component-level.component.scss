@@ -1,12 +1,82 @@
 .component-information {
     table {
         font-size: 13px;
+        table-layout: fixed;
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+        td {
+            vertical-align: middle;
+            padding: 10px;
+        }
+        .child-class, .parent-class {
+            td {
+                background: #FCFBDD;
+            }
+        }
         .child-class {
-            text-indent: 30px;
+            font-weight: bold;
+        }
+        td:first-child {
+            span {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+        }
+        .relation-icon {
+            transform: rotate(-180deg);
+            position: relative;
+            top: -10px;
+        }
+        .ellipsis {
+            max-width: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
         .action {
             font-size: 10px;
             color: dodgerblue;
+        }
+        .small-width {
+            width: 5%;
+        }
+        .medium-width {
+            width: 10%;
+        }
+        .large-width {
+            width: 20%;
+        }
+        .parent-icon {
+            color: #ed7b01;
+        }
+        .child-icon {
+            color: #000;
+        }
+        .insecure {
+            color: #ff1f1c;
+        }
+        .secure {
+            color: #60b57e
+        }
+        .text-center {
+            text-align: center;
+        }
+        .companion {
+            color: #60b57e;
+        }
+    }
+    .stack-components-toolbar {
+        margin: 0;
+        padding: 10px 0 0px 10px;
+        border: 1px solid #d1d1d1;
+        &:after {
+            content: '';
+            clear: both;
+            float: none;
+            display: block;
         }
     }
 }

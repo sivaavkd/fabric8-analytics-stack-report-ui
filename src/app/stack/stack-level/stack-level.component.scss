@@ -5,6 +5,7 @@
             padding: 15px 30px 15px 30px;
             border-right: 1px solid #ededed;
             border-bottom: 1px solid #ededed;
+            min-height: 250px;
             .heading {
                 font-weight: bold;
                 font-size: 15px;
@@ -15,7 +16,7 @@
             }
 
             .component-info {
-                margin-top: 40px;
+                margin-top: 20px;
                 p {
                     font-size: 15px;
                     color: #999;
@@ -47,14 +48,20 @@
                 }
             }
             &.security-information {
+                .cve-message {
+                    font-size: 15px;
+                    color: #777;
+                    font-weight: 100;
+                }
                 .cvss-id {
                     font-size: 20px;
                     font-weight: 100;
                     margin-top: 5px;
 
                     i {
-                        font-size: 15px;
+                        font-size: 25px;
                         cursor: pointer;
+                        color: #ff7f0e;
 
                         &.warning-red-color::before {
                             color: red;
@@ -96,21 +103,19 @@
                 .progress-bar {
                     cursor: pointer;
                 }
-                .which-component {
-                    font-size: 15px;
-                    font-weight: 100;
-                }
             }
             .statistics-info {
                 .stat-title {
                     font-weight: 100;
                     font-size: 15px;
                 }
+                .outlier-icon {
+                    color: #ff7f0e;
+                }
                 .usage-outlier {
                     padding: 0;
                     li {
                         display: inline-block;
-                        color: RED;
                         list-style-type: none;
                         margin-right: 5px;
                         &:after {

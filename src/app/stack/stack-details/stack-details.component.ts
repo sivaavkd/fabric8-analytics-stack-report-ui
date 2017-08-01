@@ -17,9 +17,16 @@ export class StackDetailsComponent implements OnChanges {
     public userStackInformation: UserStackInfoModel;
     public componentLevelInformation: any = {};
     public userComponentInformation: Array<ComponentInformationModel> = [];
+    public companionLevelRecommendation: any = {};
     public dataLoaded: boolean = false;
     public recommendationsArray: Array<RecommendationsModel> = [];
     public stackLevelOutliers: any = {};
+
+    public companionLevel: any = {};
+    public componentLevel: any = {};
+
+    public componentFilterBy: string = '';
+
     @Input() stack: string;
 
     public tabs: Array<any> = [];
@@ -38,10 +45,26 @@ export class StackDetailsComponent implements OnChanges {
             recommendations: recommendations,
             dependencies: tab.content.user_stack_info.dependencies
         };
+        this.companionLevelRecommendation = {
+            dependencies: recommendations.companion
+        };
     }
 
     ngOnChanges(): void {
+        this.tabs.length = 0;
         this.init(this.stack);
+        this.componentLevel = {
+            header: 'User components with alternate suggestion',
+            subHeader: 'Sub header for user components'
+        };
+        this.companionLevel = {
+            header: 'Additional components suggested by analytics',
+            subHeader: 'Sub header for user components'
+        };
+    }
+
+    public handleChangeFilter(filterBy: any): void {
+        this.componentFilterBy = filterBy.filterBy;
     }
 
     constructor(private stackAnalysisService: StackAnalysesService) {}

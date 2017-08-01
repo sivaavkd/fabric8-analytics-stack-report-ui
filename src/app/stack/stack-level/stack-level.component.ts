@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges, Output, EventEmitter} from '@angular/core';
 
 import {UserStackInfoModel, ComponentInformationModel} from '../models/stack-report.model';
 
@@ -11,6 +11,8 @@ import {UserStackInfoModel, ComponentInformationModel} from '../models/stack-rep
 export class StackLevelComponent {
     @Input() userStack: UserStackInfoModel;
     @Input() outliers: any;
+
+    @Output() changeFilter: EventEmitter<any> = new EventEmitter();
 
     public licenseInfo: any = {};
     public securityInfo: any = {};
@@ -25,6 +27,10 @@ export class StackLevelComponent {
         if (this.outliers) {
             this.handleStatistics(this.outliers);
         }
+    }
+
+    public handleFilter(filterBy: any): void {
+        this.changeFilter.emit(filterBy);
     }
 
     private handleStatistics(outliers: any): void {
@@ -63,7 +69,7 @@ export class StackLevelComponent {
             });
             let cvssValue: number = final.cve.CVSS;
             let indicator: number;
-            let iconClass: string = 'pficon pficon-warning-triangle-o';
+            let iconClass: string = 'fa fa-shield';
             let displayClass: string = 'progress-bar-warning';
 
             if (cvssValue < 0) {
@@ -71,7 +77,7 @@ export class StackLevelComponent {
             }
             if (cvssValue >= 7.0) {
                 indicator = cvssValue;
-                iconClass = 'pficon pficon-warning-triangle-o warning-red-color';
+                iconClass = 'fa fa-shield';
                 displayClass = 'progress-bar-danger';
             }
             this.securityInfo = {

@@ -13,9 +13,13 @@ export class AppComponent implements OnInit {
 
     constructor(private route: ActivatedRoute) {
         this.route.paramMap.subscribe((params) => {
-            debugger;
             this.label = params.get('id');
         });
+        window.onhashchange = () => {
+            let id: string = location.hash.replace('#/analyze/', '');
+            this.label = id;
+            this.changeLabel();
+        };
     }
 
     public label: string;
@@ -25,7 +29,7 @@ export class AppComponent implements OnInit {
         console.log(this.label);
         if (this.label && this.label.trim() !== '') {
             this.routerLink = '/analyze/' + this.label;
-            this.stackUrl = 'http://bayesian-api-bayesian-preview.b6ff.rh-idev.openshiftapps.com/api/v1/stack-analyses-v2/' + this.label;
+            this.stackUrl = 'https://recommender.api.openshift.io/api/v1/stack-analyses-v2/' + this.label;
         }
     }
 
@@ -33,4 +37,6 @@ export class AppComponent implements OnInit {
         console.log('Inside ngInit');
         this.changeLabel();
     }
+
+
 }

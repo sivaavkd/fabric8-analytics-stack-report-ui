@@ -26,8 +26,12 @@ import {ComponentLevelModule} from '../component-level/component-level.module';
     ComponentLevelModule,
     TabsModule.forRoot()
   ],
-  declarations: [ StackDetailsComponent ],
-  exports: [ StackDetailsComponent ],
+  declarations: [
+    StackDetailsComponent
+  ],
+  exports: [
+    StackDetailsComponent
+  ],
   providers: [ GlobalConstants ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

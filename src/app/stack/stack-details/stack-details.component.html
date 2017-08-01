@@ -11,8 +11,9 @@
             [removable]="tabz.removable"
             (removed)="removeTabHandler(tabz)"
             [customClass]="tabz.customClass">
-            <stack-level-information [outliers]="stackLevelOutliers" [userStack]="tabz && tabz.content && tabz.content.user_stack_info"></stack-level-information>
-            <component-level-information [component]="componentLevelInformation"></component-level-information>
+            <stack-level-information (changeFilter)="handleChangeFilter($event)" [outliers]="stackLevelOutliers" [userStack]="tabz && tabz.content && tabz.content.user_stack_info"></stack-level-information>
+            <component-level-information [filterBy]="componentFilterBy" [header]="componentLevel.header" [subHeader]="componentLevel.subHeader" [component]="componentLevelInformation"></component-level-information>
+            <component-level-information [header]="companionLevel.header" [subHeader]="companionLevel.subHeader" [isCompanion]="true" [component]="companionLevelRecommendation"></component-level-information>
         </tab>
     </tabset>
     <div *ngIf="!dataLoaded">Nothing to display</div>

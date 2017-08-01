@@ -1,0 +1,28 @@
+.sentiment {
+    &:after {
+        content: '';
+        display: block;
+        float: none;
+        clear: both;
+    }
+    .indicator {
+        width: 70%;
+        height: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-left: 0;
+        .sentiment-progress {
+            height: 100%;
+            position: relative;
+        }
+    }
+    .left {
+        float: left;
+    }
+    .right {
+        float: right;
+    }
+    .start-threshold {
+        margin-right: 12px;
+    }
+}

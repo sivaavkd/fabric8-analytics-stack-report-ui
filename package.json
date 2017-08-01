@@ -24,6 +24,7 @@
   "homepage": "https://github.com/fabric8io/fabric8-ui",
   "license": "Apache-2.0",
   "scripts": {
+    "runNode": "node server.js",
     "ngc": "ngc -p tsconfig-aot.json",
     "perf:profile": "webpack --profile --json > stats.json",
     "perf": "webpack-dashboard -t fabric8 -- webpack --config config/webpack.perf.js --progress --profile",
@@ -160,6 +161,7 @@
     "css-loader": "0.28.0",
     "cz-conventional-changelog": "2.0.0",
     "del": "2.2.2",
+    "express": "^4.15.3",
     "extract-text-webpack-plugin": "2.1.0",
     "favicons-webpack-plugin": "0.0.7",
     "file-loader": "0.11.1",

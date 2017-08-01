@@ -1,20 +1,22 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {ChartComponent} from '../utils/chart-component';
 import {StackLevelComponent} from './stack-level.component';
+import {ChartModule} from '../utils/chart/chart.module';
+
+import {TriggerFilterComponent} from '../utils/trigger-filter/trigger-filter.component';
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        ChartModule
     ],
     declarations: [
         StackLevelComponent,
-        ChartComponent
+        TriggerFilterComponent
     ],
     exports: [
-        StackLevelComponent,
-        ChartComponent
+        StackLevelComponent
     ]
 })
 
