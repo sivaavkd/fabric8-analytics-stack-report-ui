@@ -1,3 +1,25 @@
-.stack-details {
-
+.stack-report {
+    .error-wrapper {
+        position: relative;
+        height: 80%;
+        width: 50%;
+        margin: 5% auto;
+        .error-image {
+            .display-icon {
+                font-size: 10vw;
+            }
+            .not-found-class {
+                color: #ff1f1c;
+            }
+            .warning-class {
+                color: #fb8c00;
+            }
+            .progress-class {
+                color: #3b5998;
+            }
+        }
+        .error-container {
+            position: relative;
+        }
+    }
 }

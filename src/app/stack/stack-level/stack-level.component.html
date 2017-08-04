@@ -1,5 +1,5 @@
 <div class="stack-level-information">
-    <div class="user-stack row">
+    <div class="user-stack">
         <div class="col-xs-3 block-section">
             <div class="heading">Total packages in stack: {{userStack?.dependencies && userStack?.dependencies.length}}</div>
             <div class="stack-info-section row">
@@ -53,20 +53,38 @@
         <div class="col-xs-3 block-section">
             <div class="heading">Findings</div>
             <div class="stack-info-section statistics-info">
-                <span class="stat-title">
-                    <i class="fa outlier-icon fa-exclamation-triangle" aria-hidden="true"></i>
-                    Usage Outliers: </span> 
-                <ul class="usage-outlier">
-                    <li *ngFor="let usageOutlier of outliers.usage">{{usageOutlier.package_name}}</li>
-                </ul>
-                are rarely used in this application
-                <trigger-filter (filter)="handleFilter($event)" [filterBy]="'isUsageOutlier'" [message]="'Filter by Usage outlier'"></trigger-filter>
+                <div *ngIf="outliers && outliers.usage">
+                    <span class="stat-title">
+                        <i class="fa outlier-icon fa-exclamation-triangle" aria-hidden="true"></i>
+                        Usage Outliers: </span> 
+                    <ul class="usage-outlier">
+                        <li *ngFor="let usageOutlier of outliers.usage">{{usageOutlier.package_name}}</li>
+                    </ul>
+                    are rarely used together in this kind of application
+                </div>
+                <div *ngIf="!outliers || !outliers.usage">
+                    <i class="fa no-outlier fa-check-circle" aria-hidden="true"></i>
+                    No usage outliers are found
+                </div>
+                <!--<trigger-filter (filter)="handleFilter($event)" [filterBy]="'isUsageOutlier'" [message]="'Filter by Usage outlier'"></trigger-filter>-->
             </div>
         </div>
         <div class="col-xs-3 block-section">
             <div class="heading">Licenses</div>
             <div class="stack-info-section licenses-info row">
-                <div class="col-xs-12">Stack License Conflict - There is a conflict in .....</div>
+                <div class="col-xs-12">
+                    <span *ngIf="userStack && userStack.license_analysis && userStack.license_analysis.status && userStack.license_analysis.status.toLowerCase() === 'successful'">
+                        We suggest <b>{{userStack.license_analysis.f8a_stack_licenses && userStack.license_analysis.f8a_stack_licenses.length && userStack.license_analysis.f8a_stack_licenses.join(', ')}}</b> as possible stack license(s)
+                    </span>
+                    <span class="conflict-license" *ngIf="userStack && userStack.license_analysis && userStack.license_analysis.status && userStack.license_analysis.status.toLowerCase() === 'stacklicenseconflict'">
+                        <b>Could not calculate the stack license</b><br />
+                        because one or more dependencies have conflicting licenses
+                    </span>
+                    <span class="conflict-license" *ngIf="userStack && userStack.license_analysis && userStack.license_analysis.status && userStack.license_analysis.status.toLowerCase() === 'componentlicenseconflict'">
+                        <b>Could not calculate the stack license</b><br />
+                        because one or more dependencies have conflicting licenses
+                    </span>
+                </div>
                 <f8-chart [data]="licenseInfo['data']" [chartOptions]="licenseInfo['chartOptions']" [configs]="licenseInfo['configs']"></f8-chart>
             </div>
         </div>

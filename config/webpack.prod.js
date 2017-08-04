@@ -36,6 +36,7 @@ const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
 const FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const FABRIC8_REALM = process.env.FABRIC8_REALM || 'fabric8';
+const STACK_API_TOKEN = process.env.STACK_API_TOKEN;
 
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
@@ -45,7 +46,8 @@ const METADATA = webpackMerge(commonConfig.metadata, {
   ENV: ENV,
   FORGE_URL: FORGE_URL,
   FABRIC8_REALM: FABRIC8_REALM,
-  PUBLIC_PATH: PUBLIC_PATH
+  PUBLIC_PATH: PUBLIC_PATH,
+  STACK_API_TOKEN: STACK_API_TOKEN,
 });
 
 module.exports = webpackMerge(commonConfig, {
@@ -181,7 +183,8 @@ module.exports = webpackMerge(commonConfig, {
           'API_URL' : JSON.stringify(METADATA.API_URL),
           'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
           'FABRIC8_REALM': JSON.stringify(METADATA.FABRIC8_REALM),
-          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)  
+          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH),
+          'STACK_API_TOKEN': JSON.stringify(METADATA.STACK_API_TOKEN),  
         }
       }),
 

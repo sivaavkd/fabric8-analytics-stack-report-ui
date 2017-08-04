@@ -26,7 +26,7 @@
                 .component-count-icon {
                     font-size: 25px;
                     &.unknown {
-                        color: RED;
+                        color: #cc0000;
                     }
                     &.analyzed {
                         color: GREEN;
@@ -64,7 +64,7 @@
                         color: #ff7f0e;
 
                         &.warning-red-color::before {
-                            color: red;
+                            color: #cc0000;
                         }
                     }
                 }
@@ -115,9 +115,10 @@
                 .usage-outlier {
                     padding: 0;
                     li {
-                        display: inline-block;
+                        display: block;
                         list-style-type: none;
                         margin-right: 5px;
+                        font-weight: bold;
                         &:after {
                             content: ', ';  
                         }
@@ -126,7 +127,15 @@
                         }
                     }
                 }
+                .no-outlier {
+                    color: GREEN;
+                }
             }
+        }
+        .conflict-license {
+            color: #cc0000;
+            margin-top: -20px;
+            display: block;
         }
     }
 }

@@ -1,6 +1,5 @@
 <div class="stack-report">
   <div *ngIf="!error" (click)="$event.preventDefault()">
-    <h1>Stack level details</h1>
     <tabset *ngIf="dataLoaded">
         <tab *ngFor="let tabz of tabs"
             [heading]="tabz.title"
@@ -16,7 +15,17 @@
             <component-level-information [header]="companionLevel.header" [subHeader]="companionLevel.subHeader" [isCompanion]="true" [component]="companionLevelRecommendation"></component-level-information>
         </tab>
     </tabset>
-    <div *ngIf="!dataLoaded">Nothing to display</div>
+    <feedback *ngIf="dataLoaded" [config]="feedbackConfig && feedbackConfig"></feedback>
   </div>
-  <div *ngIf="error">{{error.message}}</div>
+  <div class="error-wrapper" *ngIf="error">
+    <div class="error-container">
+      <div class="col-xs-4 error-image">
+        <i [ngClass]="{'fa display-icon': true, 'fa-exclamation-triangle warning-class': error.code === 500, 'fa-times not-found-class': error.code === 404, 'fa-spinner progress-class': error.code === 200 || error.code === 202}" aria-hidden="true"></i>
+      </div>
+      <div class="col-xs-8 error-content">
+        <h2>{{error.title}}</h2>
+        <p>{{error.message}}</p>
+      </div>
+    </div>
+  </div>
 </div>

@@ -13,6 +13,7 @@ export class ComponentLevelComponent implements OnChanges {
     @Input() component: any;
     @Input() isCompanion: boolean;
     @Input() filterBy: string;
+    @Input() config: any;
 
     @Input() header: string;
     @Input() subHeader: string;
@@ -20,7 +21,6 @@ export class ComponentLevelComponent implements OnChanges {
     public dependencies: Array<ComponentInformationModel> = [];
     public recommendations: RecommendationsModel;
     public messages: any;
-    public sortDirectionClass: string = this.angleDown;
 
     private dependenciesList: Array<any> = [];
     private headers: Array<any> = [];
@@ -38,6 +38,8 @@ export class ComponentLevelComponent implements OnChanges {
     private direction: string = '';
     private angleUp: string = 'fa-angle-up';
     private angleDown: string = 'fa-angle-down';
+
+    public sortDirectionClass: string = this.angleDown;
 
 
     constructor() {
@@ -62,10 +64,16 @@ export class ComponentLevelComponent implements OnChanges {
             identifier: 'reset'
         }, {
             name: 'Usage Outliers',
-            identifier: 'isUsageOutlier'
+            identifier: 'isUsageOutlier',
+            class: 'fa usage-outlier filter-icon'
         }, {
             name: 'Security Issues',
-            identifier: 'security_issue'
+            identifier: 'has_issue',
+            class: 'fa insecure fa-ban'
+        }, {
+            name: 'Alternate Components',
+            identifier: 'isChild',
+            class: 'fa fa-database child-icon alternate-component-icon'
         }];
 
         this.currentFilter = this.filters[0].name;
@@ -90,6 +98,36 @@ export class ComponentLevelComponent implements OnChanges {
             element.classList.remove('open');
         } else {
             element.classList.add('open');
+        }
+    }
+
+    public handleCollapseClick(event: Event): void {
+        let target: any = event.target;
+        if (target.classList.contains('parent-icon')) {
+            let parent: HTMLElement = target.parentNode.parentNode;
+            let id: string = parent.id;
+            if (target.classList.contains('collapsed')) {
+                target.classList.remove('collapsed');
+                this.toggleEntries(id, true);
+            } else {
+                target.classList.add('collapsed');
+                this.toggleEntries(id, false);
+            }
+        }
+    }
+
+    private toggleEntries(id: string, isCollapsed: boolean): void {
+        let rows = document.getElementsByClassName(id);
+        let len: number = rows.length;
+        if (isCollapsed) {
+            for (let i: number = 0; i < len; ++ i) {
+                if (rows[i].classList.contains('collapse'))
+                    rows[i].classList.remove('collapse');
+            }
+        } else {
+            for (let i: number = 0; i < len; ++ i) {
+                rows[i].classList.add('collapse');
+            }
         }
     }
 
@@ -150,52 +188,50 @@ export class ComponentLevelComponent implements OnChanges {
             this.headers = [
                 {
                     name: 'Package name',
-                    identifier: this.keys['name'],
-                    class: 'large',
-                    isSortable: true
+                    class: 'medium',
+                    order: 1
                 }, {
                     name: 'Current Version',
-                    identifier: this.keys['currentVersion'],
                     class: 'small',
-                    isSortable: true
+                    order: 2
+                }, {
+                    name: 'Recommended Version',
+                    class: 'small',
+                    order: 3
                 }, {
                     name: 'Latest Version',
                     class: 'small',
-                    identifier: this.keys['latestVersion']
+                    order: 4
                 }, {
                     name: 'Security Issue',
                     class: 'small',
-                    identifier: this.keys['avgCycloComplexity']
+                    order: 5
                 }, {
                     name: 'License',
                     class: 'medium',
-                    identifier: this.keys['license']
-                }, {
-                    name: 'Sentiment Score',
-                    class: 'medium',
-                    identifier: this.keys['linesOfCode'],
-                    isSortable: true
+                    order: 6
                 }, {
                     name: 'OSIO Usage',
                     class: 'small',
-                    identifier: this.keys['avgCycloComplexity']
-                }, {
-                    name: 'Github Usage',
-                    class: 'small',
-                    identifier: this.keys['avgCycloComplexity']
+                    order: 7
                 }, {
                    name: 'Github Statistics',
-                   class: 'medium'
+                   class: 'small',
+                   order: 8
                 }, {
-                    name: 'Top 10 dependencies',
-                    class: 'medium'
+                    name: 'Github Dependants',
+                    class: 'large',
+                    order: 9
                 }, {
-                    name: 'Action',
+                    name: 'Categories',
                     class: 'medium',
-                    identifier: this.keys['noOfFiles'],
-                    isSortable: true
+                    order: 10
                 }
             ];
+
+            if (this.isCompanion) {
+                this.headers.splice(2, 1);
+            }
 
             this.dependenciesList = [];
             let linesOfCode: any = '';
@@ -205,11 +241,11 @@ export class ComponentLevelComponent implements OnChanges {
                 eachOne = dependencies[i];
                 dependency = this.setParams(eachOne, this.isCompanion !== undefined);
                 dependency['isUsageOutlier'] = this.isUsageOutlier(dependency['name']);
+                dependency['compId'] = 'comp-' + i;
                 this.dependenciesList.push(dependency);
                 tempLen = this.dependenciesList.length;
                 if (this.alternate) {
-                    this.checkAlternate(eachOne['name'], eachOne['version'], this.dependenciesList);
-
+                    this.checkAlternate(eachOne['name'], eachOne['version'], this.dependenciesList, dependency['compId']);
                     if (tempLen !== this.dependenciesList.length) {
                         dependency['isParent'] = true;
                     }
@@ -220,24 +256,49 @@ export class ComponentLevelComponent implements OnChanges {
 
     private setParams(input: any, canCreateWorkItem: boolean) {
         let output: any = {};
+        let github: any = input['github'];
         output['name'] = input['name'];
         output['current_version'] = input['version'];
-        output['latest_version'] = input['latest_version'];
-        output['license'] = input['licenses'] && input['licenses'].join(', ');
+        if (canCreateWorkItem) {
+            output['current_version'] = '';
+            output['recommended_version'] = input['version'];
+        } else {
+            output['recommended_version'] = '';
+        }
+        output['recommended_version'] = this.putNA(output['recommended_version']);
+        output['current_version'] = this.putNA(output['current_version']);
+        output['latest_version'] = this.putNA(input['latest_version']);
+        output['license'] = input['licenses'] && input['licenses'].join(', ') || '-';
+        output['license_analysis'] = input['license_analysis'] && input['license_analysis'];
         output['sentiment_score'] = input['sentiment'] && input['sentiment']['overall_score'];
         output['github_user_count'] = input['github'] && input['github']['dependent_repos'];
+        output['github_user_count'] = this.putNA(output['github_user_count']);
         output['osio_user_count'] = input['osio_user_count'];
-        output['security_issue'] = input['security'].length > 0;
-        output['action'] = canCreateWorkItem ? 'Create Work Item' : '';
+        output['watchers'] = this.putNA(github['watchers']);
+        output['stargazers_count'] = this.putNA(github['stargazers_count']);
+        output['total_releases'] = this.putNA(github['total_releases']);
+        output['forks_count'] = this.putNA(github['forks_count']);
+        output['contributors'] = this.putNA(github['contributors']);
+        output['git_stat'] = (output['github_user_count'] > -1 || output['watchers'] > -1 || output['stargazers_count'] > -1 || output['total_releases'] > -1 || output['forks_count'] > -1 || output['contributors'] > -1);
+        output['has_issue'] = input['security'].length > 0;
+        output['security_issue'] = output['has_issue'] ? Math.max.apply(Math, input['security'].map(d => d.CVSS)) : '';
+        output['used_by'] = github['used_by'];
+        output['categories'] = input['topic_list'];
+        output['categories'] = (output['categories'] && output['categories'].length > 0 && output['categories'].join(', ')) || '';
         return output;
     }
 
-    private checkAlternate (name: string, version: string, list: Array<any>) {
+    private putNA(count: any): any {
+        return !count || count < 0 ? '-' : count;
+    }
+
+    private checkAlternate (name: string, version: string, list: Array<any>, parentId: string) {
         if (this.alternate && this.alternate.length > 0) {
             let recom: Array<ComponentInformationModel> = this.alternate.filter((a) => a.replaces[0].name === name && a.replaces[0].version === version);
             recom.forEach(r => {
                 let obj: any = this.setParams(r, true);
                 obj['isChild'] = true;
+                obj['parent-reference'] = parentId;
                 list.push(obj);
             });
         }

@@ -13,6 +13,8 @@ import {StackReportModel, ResultInformationModel, UserStackInfoModel, ComponentI
 })
 
 export class StackDetailsComponent implements OnChanges {
+    @Input() stack: string;
+    
     public error: any = {};
     public userStackInformation: UserStackInfoModel;
     public componentLevelInformation: any = {};
@@ -27,12 +29,15 @@ export class StackDetailsComponent implements OnChanges {
 
     public componentFilterBy: string = '';
 
-    @Input() stack: string;
+
+    public feedbackConfig: any = {};
 
     public tabs: Array<any> = [];
 
     private userStackInformationArray: Array<UserStackInfoModel> = [];
     private totalManifests: number;
+
+    private stackId: string;
 
     public tabSelection(tab: any): void {
         tab['active'] = true;
@@ -51,15 +56,17 @@ export class StackDetailsComponent implements OnChanges {
     }
 
     ngOnChanges(): void {
-        this.tabs.length = 0;
+        this.resetFields();
+        this.stackId = this.stack && this.stack.split('/')[this.stack.split('/').length - 1];
         this.init(this.stack);
+        this.initFeedback();
         this.componentLevel = {
-            header: 'User components with alternate suggestion',
-            subHeader: 'Sub header for user components'
+            header: 'Analysis of your application stack',
+            subHeader: 'Recommended alternative dependencies'
         };
         this.companionLevel = {
-            header: 'Additional components suggested by analytics',
-            subHeader: 'Sub header for user components'
+            header: 'Possible companion dependencies',
+            subHeader: 'Consider theses additional dependencies'
         };
     }
 
@@ -70,9 +77,31 @@ export class StackDetailsComponent implements OnChanges {
     constructor(private stackAnalysisService: StackAnalysesService) {}
 
     private handleError(error: any): void {
-        this.error = {
-            message: error.message || 'In Progress'
+        this.error = error;
+    }
+
+    private initFeedback(): void {
+        this.feedbackConfig = {
+            name: 'Feedback',
+            stackId: this.stackId,
+            title: 'Tell us your experience',
+            poll: [{
+                question: 'How useful do you find this?',
+                type: 'rating'
+            }, {
+                question: 'How likely do you recommend this to others?',
+                type: 'rating'
+            }, {
+                question: 'Tell us more',
+                type: 'text'
+            }]
         };
+    }
+
+    private resetFields(): void {
+        this.tabs = [];
+        this.recommendationsArray = [];
+        // this.dataLoaded = false;
     }
 
     private init(url: string): void {
@@ -83,13 +112,14 @@ export class StackDetailsComponent implements OnChanges {
                 if (data && (!data.hasOwnProperty('error') && Object.keys(data).length !== 0)) {
                     let resultInformation: Observable<StackReportModel> = getStackReportModel(data);
                     resultInformation.subscribe((response) => {
+                        console.log(response);
                         let result: Array<ResultInformationModel> = response.result;
                         this.totalManifests = result.length;
                         this.userStackInformationArray = result.map((r) => r.user_stack_info);
                         result.forEach((r, index) => {
                             console.log('HEre');
                             this.tabs.push({
-                                title: 'File',
+                                title: '',
                                 content: r,
                                 index: index
                             });
@@ -101,12 +131,29 @@ export class StackDetailsComponent implements OnChanges {
                     });
                 } else {
                     this.handleError({
-                        message: 'Error API In Progress'
+                        message: data.error,
+                        code: data.statusCode,
+                        title: 'Please, wait a while more'
                     });
                 }
             },
             error => {
                 // this.handleError(error);
+                console.log(error);
+                let title: string = '';
+                if (error.status >= 500) {
+                    title = 'Something unexpected happened';
+                } else if (error.status === 404) {
+                    title = 'You are looking for something which isn\'t there';
+                } else if (error.status === 401) {
+                    title = 'You don\'t seem to have sufficient privileges to access this';
+                }
+                this.handleError({
+                    message: error.statusText,
+                    code: error.status,
+                    title: title
+                });
+                console.log(this.error);
             });
     }
 }
