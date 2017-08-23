@@ -43,15 +43,17 @@ export class StackDetailsComponent implements OnChanges {
         tab['active'] = true;
         let currentIndex: number = tab['index'];
         let recommendations: RecommendationsModel = this.recommendationsArray[currentIndex];
-        this.stackLevelOutliers = {
-            'usage': recommendations.usage_outliers
-        };
+        if (recommendations) {
+            this.stackLevelOutliers = {
+                'usage': recommendations.usage_outliers
+            };
+            this.companionLevelRecommendation = {
+                dependencies: recommendations.companion
+            };
+        }
         this.componentLevelInformation = {
             recommendations: recommendations,
             dependencies: tab.content.user_stack_info.dependencies
-        };
-        this.companionLevelRecommendation = {
-            dependencies: recommendations.companion
         };
     }
 
