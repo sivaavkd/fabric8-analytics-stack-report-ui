@@ -119,11 +119,11 @@ export class StackDetailsComponent implements OnChanges {
                         result.forEach((r, index) => {
                             console.log('HEre');
                             this.tabs.push({
-                                title: '',
+                                title: r.manifest_file_path,
                                 content: r,
                                 index: index
                             });
-                            this.recommendationsArray.push(r.recommendations);
+                            this.recommendationsArray.push(r.recommendation);
                         });
 
                         this.dataLoaded = true;
