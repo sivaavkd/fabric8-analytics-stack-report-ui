@@ -116,21 +116,6 @@ export class ComponentLevelComponent implements OnChanges {
         }
     }
 
-    private toggleEntries(id: string, isCollapsed: boolean): void {
-        let rows = document.getElementsByClassName(id);
-        let len: number = rows.length;
-        if (isCollapsed) {
-            for (let i: number = 0; i < len; ++ i) {
-                if (rows[i].classList.contains('collapse'))
-                    rows[i].classList.remove('collapse');
-            }
-        } else {
-            for (let i: number = 0; i < len; ++ i) {
-                rows[i].classList.add('collapse');
-            }
-        }
-    }
-
     public handleFilterFieldClick(element: Element, field: any, event: Event): void {
         event.stopPropagation();
         this.currentFilter = field.name;
@@ -166,10 +151,14 @@ export class ComponentLevelComponent implements OnChanges {
         if (this.component) {
             console.log(this.component);
             if (this.isCompanion === undefined) {
-                this.dependencies = this.component['dependencies'];
-                this.recommendations = this.component['recommendations'];
-                this.alternate = this.recommendations.alternate;
-                this.usageOutliers = this.recommendations['usage_outliers'];
+                if (this.component['dependencies']) {
+                    this.dependencies = this.component['dependencies'];
+                }
+                if (this.component['recommendations']) {
+                    this.recommendations = this.component['recommendations'];
+                    this.alternate = this.recommendations.alternate;
+                    this.usageOutliers = this.recommendations['usage_outliers'];
+                }
             } else {
                 this.dependencies = this.component['dependencies'];
             }
@@ -290,6 +279,21 @@ export class ComponentLevelComponent implements OnChanges {
 
     private putNA(count: any): any {
         return !count || count < 0 ? '-' : count;
+    }
+
+    private toggleEntries(id: string, isCollapsed: boolean): void {
+        let rows = document.getElementsByClassName(id);
+        let len: number = rows.length;
+        if (isCollapsed) {
+            for (let i: number = 0; i < len; ++ i) {
+                if (rows[i].classList.contains('collapse'))
+                    rows[i].classList.remove('collapse');
+            }
+        } else {
+            for (let i: number = 0; i < len; ++ i) {
+                rows[i].classList.add('collapse');
+            }
+        }
     }
 
     private checkAlternate (name: string, version: string, list: Array<any>, parentId: string) {

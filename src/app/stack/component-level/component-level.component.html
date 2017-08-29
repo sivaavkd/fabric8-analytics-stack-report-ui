@@ -1,7 +1,7 @@
 <div class="component-information">
     <h2>{{header}}</h2>
     <p>{{subHeader}}</p>
-    <div *ngIf="dependencies" class="table-responsive">
+    <div *ngIf="dependenciesList.length > 0" class="table-responsive">
         <!-- Toolbar -->
     <div *ngIf="!isCompanion" class="stack-components-toolbar toolbar-pf table-view-pf-toolbar">
         <div class="col-sm-12">
@@ -78,5 +78,5 @@
         </tbody>
         </table>
     </div>
-    <div *ngIf="!dependencies">No data to show</div>
+    <div *ngIf="dependenciesList.length === 0">No data to show</div>
 </div>
