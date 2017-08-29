@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
         console.log(this.label);
         if (this.label && this.label.trim() !== '') {
             this.routerLink = '/analyze/' + this.label;
-            this.stackUrl = 'https://recommender.api.openshift.io/api/v1/stack-analyses-v2/' + this.label;
+            this.stackUrl = 'https://recommender.api.openshift.io/api/v1/stack-analyses/' + this.label;
         }
     }
 
