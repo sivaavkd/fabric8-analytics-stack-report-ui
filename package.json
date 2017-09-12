@@ -1,6 +1,6 @@
 {
   "name": "fabric8-analytics-stack-report-ui",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "A Stack Analysis Feature",
   "keywords": [
     "angular2",

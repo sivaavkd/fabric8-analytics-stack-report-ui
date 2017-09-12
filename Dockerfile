@@ -2,11 +2,15 @@ FROM registry.centos.org/centos/centos:7
 
 MAINTAINER Mohammed Zeeshan Ahmed <moahmed@redhat.com>
 
-#RUN yum -y update && yum clean all
+RUN mkdir -p /opt/scripts /opt/app /var/www/html
 
-RUN mkdir -p /opt/scripts /var/www/html
+WORKDIR /opt/app
 
-ADD dist /var/www/html/
+ADD ./src /opt/app/src
+ADD ./package.json /opt/app
+ADD ./config /opt/app/config
+ADD ./openshift /opt/app/openshift
+ADD ./version_number.js /opt/app
 
 ADD ./fix-permissions.sh ./install.sh ./passwd.template ./run.sh /opt/scripts/
 
