@@ -43,7 +43,7 @@ Then, start the app with:
 If you trying to refresh your installation, you need to run:
 
  $ npm run reinstall
-
+ 
 Then, start the app with:
 
  $ npm start
