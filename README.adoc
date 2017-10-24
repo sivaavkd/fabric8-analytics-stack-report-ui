@@ -48,7 +48,7 @@ Then, start the app with:
 
  $ npm start
 
-=== Testcase run
+=== Testcase run 
 
 To run the linter, unit tests, and functional test use:
 
