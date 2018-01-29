@@ -29,7 +29,7 @@ objects:
             protocol: TCP
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/v1/readiness
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 10
@@ -37,7 +37,7 @@ objects:
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/v1/liveness
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 10
