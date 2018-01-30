@@ -37,6 +37,7 @@ If you're trying to run the app for the first time:
 Then, start the app with:
 
  $ npm start
+ 
 
 === Fresh run
 
