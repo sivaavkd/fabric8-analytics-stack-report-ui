@@ -24,7 +24,7 @@ RUN set -ex \
 ENV NODE_VERSION 8.3.0
 
 COPY tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
-RUN yum install yum install -y epel-release && \
+RUN yum install -y epel-release && \
     yum  --setopt tsflags='nodocs' -y update && \
     yum install --setopt tsflags='nodocs' -y bzip2 fontconfig tar java-1.8.0 nmap-ncat psmisc gtk3 git \
       python-setuptools xorg-x11-xauth wget unzip which \
