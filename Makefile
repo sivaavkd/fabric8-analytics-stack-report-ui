@@ -1,13 +1,14 @@
-ifeq ($(TARGET),rhel)
-  DOCKERFILE := Dockerfile.rhel
-  REGISTRY := push.registry.devshift.net/osio-prod
-else
-  DOCKERFILE := Dockerfile
-  REGISTRY := push.registry.devshift.net
-endif
-REPOSITORY?=fabric8-analytics-stack-report-ui
+REGISTRY := quay.io
 DEFAULT_TAG=latest
 REPOSITORY_UI_TESTS?=fabric8-analytics-stack-report-ui-tests
+
+ifeq ($(TARGET),rhel)
+  DOCKERFILE := Dockerfile.rhel
+  REPOSITORY := openshiftio/rhel-fabric8-analytics-stack-report-ui
+else
+  DOCKERFILE := Dockerfile
+  REPOSITORY := openshiftio/fabric8-analytics-stack-report-ui
+endif
 
 .PHONY: all docker-build fast-docker-build test get-image-name get-image-repository
 
