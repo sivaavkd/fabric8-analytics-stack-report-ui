@@ -137,6 +137,7 @@ shared global styles that we will refactor out in to a shared library at some po
 Only update these styles if you are making a truly global style, and are going to
 synchronise your changes across all the various UI projects.
 
+
 == Contributing to the app
 
 The development guide is part of the link:./CONTRIBUTING.adoc[contributors'
