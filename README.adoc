@@ -5,7 +5,7 @@ image:https://ci.centos.org/job/devtools-fabric8-analytics-stack-report-ui-f8a-b
 
 **Fabric8 Analytics Stack Report is a stack analysis feature.** 
  
-== Running the app 
+== Running the app
  
 === Set NODE_ENV
 If you're just trying to test the application, please use inmemory mode which
