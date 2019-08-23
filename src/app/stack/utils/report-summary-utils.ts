@@ -82,14 +82,15 @@ export class ReportSummaryUtils {
             userStackInfo.analyzed_dependencies.length > 0) {
 
             let securityIssues: number = 0;
+            let dependenciesEffected: number = 0;
             let maxIssue: SecurityInformationModel = null,
                 temp: SecurityInformationModel = null;
 
-            let analyzedDependencies: Array < ComponentInformationModel > ;
+            let analyzedDependencies: Array<ComponentInformationModel>;
             analyzedDependencies = userStackInfo.analyzed_dependencies;
             analyzedDependencies.forEach((analyzed) => {
                 if (analyzed.security && analyzed.security.length > 0) {
-                    let currSecurity: Array < SecurityInformationModel > = analyzed.security;
+                    let currSecurity: Array<SecurityInformationModel> = analyzed.security;
                     temp = currSecurity.reduce((a, b) => {
                         return parseFloat(a.CVSS) < parseFloat(b.CVSS) ? b : a;
                     });
@@ -99,13 +100,14 @@ export class ReportSummaryUtils {
                         }
                     }
                     securityIssues += currSecurity.length;
+                    dependenciesEffected += 1
                 }
             });
             let totalComponentsWithMaxScore: number = 0;
             analyzedDependencies.forEach((analyzed) => {
                 if (analyzed.security && analyzed.security.length > 0) {
-                    let currSecurity: Array < SecurityInformationModel > = analyzed.security;
-                    let filters: Array < SecurityInformationModel > ;
+                    let currSecurity: Array<SecurityInformationModel> = analyzed.security;
+                    let filters: Array<SecurityInformationModel>;
                     filters = currSecurity.filter((security) => {
                         return security.CVSS === maxIssue.CVSS;
                     });
@@ -114,9 +116,14 @@ export class ReportSummaryUtils {
             });
 
             let totalIssuesEntry: MReportSummaryInfoEntry = new MReportSummaryInfoEntry();
-            totalIssuesEntry.infoText = 'Total issues found';
+            totalIssuesEntry.infoText = 'Total CVEs found';
             totalIssuesEntry.infoValue = securityIssues;
             securityCard.reportSummaryContent.infoEntries.push(totalIssuesEntry);
+
+            let totaldependenciesEffectedEntry: MReportSummaryInfoEntry = new MReportSummaryInfoEntry();
+            totaldependenciesEffectedEntry.infoText = 'Dependencies effected';
+            totaldependenciesEffectedEntry.infoValue = dependenciesEffected;
+            securityCard.reportSummaryContent.infoEntries.push(totaldependenciesEffectedEntry);
 
             if (maxIssue) {
                 let securityColor: string = Number(maxIssue.CVSS) >= 7 ? this.colors.security.warning : this.colors.security.moderate;
@@ -259,7 +266,7 @@ export class ReportSummaryUtils {
 
             if (stackLicense.infoValue !== 'NONE' && stackLicense.infoValue !== 'Unknown') {
                 let restrictiveLicenses: MReportSummaryInfoEntry = new MReportSummaryInfoEntry();
-            restrictiveLicenses.infoText = 'Restrictive Licenses';
+                restrictiveLicenses.infoText = 'Restrictive Licenses';
                 let restrictive = licenseAnalysis.outlier_packages;
                 restrictiveLicenses.infoValue = restrictive ? restrictive.length : 0;
                 licensesCard.reportSummaryContent.infoEntries.push(restrictiveLicenses);
