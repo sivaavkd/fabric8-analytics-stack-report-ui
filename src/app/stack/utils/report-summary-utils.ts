@@ -121,7 +121,7 @@ export class ReportSummaryUtils {
             securityCard.reportSummaryContent.infoEntries.push(totalIssuesEntry);
 
             let totaldependenciesEffectedEntry: MReportSummaryInfoEntry = new MReportSummaryInfoEntry();
-            totaldependenciesEffectedEntry.infoText = 'Dependencies effected';
+            totaldependenciesEffectedEntry.infoText = 'Dependencies Effected';
             totaldependenciesEffectedEntry.infoValue = dependenciesEffected;
             securityCard.reportSummaryContent.infoEntries.push(totaldependenciesEffectedEntry);
 
