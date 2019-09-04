@@ -100,7 +100,7 @@ export class ReportSummaryUtils {
                         }
                     }
                     securityIssues += currSecurity.length;
-                    dependenciesEffected += 1
+                    dependenciesEffected ++;
                 }
             });
             let totalComponentsWithMaxScore: number = 0;
